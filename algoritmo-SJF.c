@@ -48,8 +48,67 @@ void listprocs (struct dados_processo *processos) {
   printf("\n\n");
  };
 
+/* Escalonamento SJF*/
+void sjf (struct dados_processo *proc) {
+  int tempo = 0, inicio = 0, fim, shortest;
+  struct dados_processo *copia, *tmpsrc, *tmp, *beforeshortest;
+  printf("\tEscalonamento SJF\n");
+  printf("\n");
+  /* Lista de dados_processo Ã© replicada */
+  tmpsrc = proc;
+  copia = tmp = NULL;
+  while (tmpsrc != NULL) {
+    if (copia == NULL) {
+		copia = init_processos(tmpsrc->criacao, tmpsrc->duracao, tmpsrc->prioridade);
+		tmp = copia;
+    } else {
+		tmp->prox = init_processos(tmpsrc->criacao, tmpsrc->duracao, tmpsrc->prioridade);
+		tmp = tmp->prox;
+    };
+    tmpsrc = tmpsrc->prox;
+  };
+  while (copia != NULL) {
+    /* Encontra o proximo processo*/
+    beforeshortest = NULL;
+    shortest = copia->duracao;
+    tmp = copia->prox;
+    tmpsrc = copia;
+    while (tmp != NULL) {
+		if (tmp->duracao < shortest) {
+			shortest = tmp->duracao;
+			beforeshortest = tmpsrc;
+		};
+		tmpsrc = tmp;
+		tmp = tmp->prox;
+    };
+    /* Executa processo e remove rÃ¡plica da lista de dados_processo */
+    if (beforeshortest == NULL) {
+		/* Aloca o primeiro processo caso o mesmo seja menor */
+		inicio += tempo;
+		tempo += copia->duracao;
+		fim = tempo+inicio;
+		printf("Id: %d\tduracao: %d\tEspera: %d\tRetorno: %d\n", copia->numero, tempo, inicio, fim);
+		tmpsrc = copia;
+		copia = copia->prox;
+		free(tmpsrc);
+    } else {
+		/* Aloca o primeiro processo caso nÃ£o haja 
+		ocorrencia de outro menor 
+		*/
+		tmp = beforeshortest->prox;
+		inicio += tempo;
+		tempo += tmp->duracao;
+		fim = tempo+inicio;
+		printf("Id: %d\tduracao: %d\tEspera: %d\tRetorno: %d\n", tmp->numero, tempo, inicio, fim);
+		beforeshortest->prox = tmp->prox;
+		free(tmp);
+    }
+  }
+	return;
+}
+
 main(int argc, char *argv[]){
-	FILE *arq; //Criando a variável ponteiro para o arquivo
+	FILE *arq; //Criando a variï¿½vel ponteiro para o arquivo
 	char linha_processo[10]; //Linha lida do arquivo
 	struct dados_processo *processos, *processo_auxiliar; //Processos lidos do arquivo //Processo auxiliar para nao perder a referencia
 	
@@ -67,7 +126,7 @@ main(int argc, char *argv[]){
 	processos = init_processos((int)(linha_processo[0] - '0'), (int)(linha_processo[2] - '0'), (int)(linha_processo[4] - '0'));
 	processo_auxiliar = processos;
 	
-	//Enquanto não for fim de arquivo o looping será executado e será lido os demais processos
+	//Enquanto nï¿½o for fim de arquivo o looping serï¿½ executado e serï¿½ lido os demais processos
 	while(fgets(linha_processo, 10, arq) != NULL){
 		processo_auxiliar->prox = init_processos((int)(linha_processo[0] - '0'), (int)(linha_processo[2] - '0'), (int)(linha_processo[4] - '0'));
 		processo_auxiliar = processo_auxiliar->prox;
@@ -79,5 +138,7 @@ main(int argc, char *argv[]){
 	// Fechando arquivo
 	fclose(arq);
 	
+	sjf(processos);
+
 	return 0;
 }
