@@ -3,20 +3,24 @@
 Alunos:	Cesar Augusto Santos Ferreira
 	Otavio Augusto Marques Koike
 
-Tempo medio de vida dos processos: 4.00
-Tempo medio de espera dos processos: 1.50
+Tempo medio de vida dos processos: 6.75
+Tempo medio de espera dos processos: 3.25
 Numero de trocas de contexto: 3
 
 Diagrama de tempo de execucao:
 
 	Tempo	P1	P2	P3	P4
-	00-01	##	--		
-	01-02		##	--	
-	02-03		##	--	
-	03-04			--	##
-	04-05			--	##
-	05-06			--	##
-	06-07			##	
-	07-08			##	
-	08-09			##	
-	09-10			##	
+	00-01	--	##		
+	01-02	--	##	--	
+	02-03	--		##	
+	03-04	--		##	--
+	04-05	--		##	--
+	05-06	--		##	--
+	06-07	--			##
+	07-08	--			##
+	08-09	--			##
+	09-10	##			
+	10-11	##			
+	11-12	##			
+	12-13	##			
+	13-14	##			
