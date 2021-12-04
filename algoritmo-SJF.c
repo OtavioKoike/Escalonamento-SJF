@@ -107,7 +107,7 @@ void sjf (struct dadosProcesso *processos) {
     while (processoAtual != NULL) {
         //Encontra o proximo processo a ser executado
         while (processoAtual != NULL) {
-        	//Procura o processo com menor tempo, que ja existe e que nao foi executado
+			//Procura o processo com menor tempo, que ja existe e que nao foi executado
             if (processoAtual->duracao < menorTempo && processoAtual->criacao <= tempoAtual && processoAtual->processado == false) {
                 melhorProcesso = processoAtual;
 				menorTempo = processoAtual->duracao;
@@ -115,7 +115,7 @@ void sjf (struct dadosProcesso *processos) {
             processoAtual = processoAtual->prox;
         }
         
-		//Se todos ja tiverem sido processado, finaliza a funcao
+        //Se todos ja tiverem sido processado, finaliza a funcao
         if(melhorProcesso == NULL){
         	tempoFinal = tempoAtual;
         	return;
@@ -132,7 +132,7 @@ void sjf (struct dadosProcesso *processos) {
 	        //Reinicia as variaveis para executar a busca novamente
 	        menorTempo = 1000;
 	        processoAtual = processos;
-	        melhorProcesso = NULL;	
+	        melhorProcesso = NULL;
 		}
     }
     
