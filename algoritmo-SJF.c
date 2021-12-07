@@ -3,7 +3,7 @@
 
 typedef enum { false = 0, true = !false } bool;
 
-//Variaveis globais para serem setadas no SJF e usadas na manipula��o do arquivo
+//Variaveis globais para serem setadas no SJF e usadas na manipulacao do arquivo
 int esperaTotal = 0, vidaTotal = 0, qtProcessos, tempoFinal;
 
 struct dadosProcesso {
@@ -87,7 +87,7 @@ struct dadosProcesso *iniciaProcessos (int id, int criacao, int duracao, int pri
     }
 
     //Preenchimento do objeto    
-    processo->numero = id++;
+    processo->numero = id;
     processo->criacao = criacao;
     processo->duracao = duracao;
     processo->prioridade = prioridade;
@@ -177,7 +177,7 @@ void geraArquivo(struct dadosProcesso *processos){
 	//Impresso no arquivo os dados solicitados na atividade
 	fprintf(arq_saida, "Tempo medio de vida dos processos: %.2f\n", vidaMedia);
 	fprintf(arq_saida, "Tempo medio de espera dos processos: %.2f\n", esperaMedia);
-	fprintf(arq_saida, "Numero de trocas de contexto: %d\n\n", qtProcessos -1);
+	fprintf(arq_saida, "Numero de trocas de contexto: %d\n\n", qtProcessos);
 	
 	//Impresso no arquivo o diagrama de tempo
 	fputs("Diagrama de tempo de execucao:\n\n", arq_saida);
