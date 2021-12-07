@@ -161,10 +161,9 @@ void geraArquivo(struct dadosProcesso *processos){
 	arq_saida = fopen("saidaProcessos.txt", "w");
 	
 	//Testando a abertura do arquivo
-	if (arq_saida == NULL)
-	{
-		printf("Erro ao tentar abrir o arquivo!");
-		exit(1);
+	if (arq_saida == NULL){
+		printf("Problemas na criacao do arquivo\n");
+		return;
 	}
 	
 	//Impresso no arquivo dos dados da materia e alunos
