@@ -28,7 +28,7 @@ void geraArquivo(struct dadosProcesso *processos);
 
 main(int argc, char *argv[]){
     FILE *arq; //Criando a variavel ponteiro para o arquivo
-    char linhaProcesso[10]; //Linha lida do arquivo
+    int linhaProcesso[3]; //Linha lida do arquivo
     struct dadosProcesso *processos, *processoAuxiliar; //Processos lidos do arquivo //Processo auxiliar para nao perder a referencia
 	int idProcesso = 1; //Variavel para identificar cada processo que entra na fila
 	
@@ -42,16 +42,16 @@ main(int argc, char *argv[]){
     }
 	
     //Le o primeiro processo
-    fgets(linhaProcesso, 10, arq);
+    fscanf(arq, "%d %d %d", &linhaProcesso[0], &linhaProcesso[1], &linhaProcesso[2]);
 	//Cria o objeto do primeiro processo  
-    processos = iniciaProcessos(idProcesso++, (int)(linhaProcesso[0] - '0'), (int)(linhaProcesso[2] - '0'), (int)(linhaProcesso[4] - '0'));
+    processos = iniciaProcessos(idProcesso++, linhaProcesso[0], linhaProcesso[1], linhaProcesso[2]);
 	//Atribui o primeiro processo no auxiliar para nao perder a referencia
     processoAuxiliar = processos;
 
     //Enquanto nao for o fim do arquivo, o looping sera executado e sera lido os demais processos
-    while(fgets(linhaProcesso, 10, arq) != NULL){
+    while(fscanf(arq, "%d %d %d", &linhaProcesso[0], &linhaProcesso[1], &linhaProcesso[2]) != EOF){
     	//Cria o objeto do processo
-        processoAuxiliar->prox = iniciaProcessos(idProcesso++, (int)(linhaProcesso[0] - '0'), (int)(linhaProcesso[2] - '0'), (int)(linhaProcesso[4] - '0'));
+        processoAuxiliar->prox = iniciaProcessos(idProcesso++, linhaProcesso[0], linhaProcesso[1], linhaProcesso[2]);
 		//Atribui o elemento criado como auxiliar para continuar a lista de processos
 		processoAuxiliar = processoAuxiliar->prox;
     }
@@ -100,7 +100,7 @@ struct dadosProcesso *iniciaProcessos (int id, int criacao, int duracao, int pri
 
 //Escalonamento SJF
 void sjf (struct dadosProcesso *processos) {
-    int tempoAtual = 0, menorTempo = 1000;
+    int tempoAtual = 0, menorTempo = INT_MAX; //Setando o menor tempo com o maior numero possivel para qualquer numero ser menor que ele
     struct dadosProcesso *processoAtual, *melhorProcesso = NULL;
 
 	processoAtual = processos;
@@ -130,7 +130,7 @@ void sjf (struct dadosProcesso *processos) {
 	        qtProcessos++;
 	        
 	        //Reinicia as variaveis para executar a busca novamente
-	        menorTempo = 1000;
+	        menorTempo = INT_MAX;
 	        processoAtual = processos;
 	        melhorProcesso = NULL;
 		}
